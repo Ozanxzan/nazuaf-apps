@@ -4,6 +4,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync, copyFileSync } from
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderIndex, renderDetail } from './lib/render.mjs';
+import { loadMirrors, applyMirrors } from './lib/mirror.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -11,7 +12,9 @@ export async function buildSite(opts = {}) {
   const dataPath = opts.dataPath || join(ROOT, 'data', 'apps.json');
   const outDir = opts.outDir || join(ROOT, 'public');
   const data = JSON.parse(readFileSync(dataPath, 'utf8'));
-  const apps = data.apps || [];
+  // Mirror unduhan (data/mirror-urls.json, di samping apps.json) — kalau tidak ada, build tetap jalan tanpa mirror.
+  const mirrorPath = opts.mirrorPath || join(dirname(dataPath), 'mirror-urls.json');
+  const apps = applyMirrors(data.apps || [], loadMirrors(mirrorPath));
   mkdirSync(outDir, { recursive: true });
   mkdirSync(join(outDir, 'apps'), { recursive: true });
   // CSS sudah ada di public/assets/style.css (di-commit); pastikan tetap ada saat build di Pages

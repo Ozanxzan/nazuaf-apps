@@ -41,6 +41,16 @@
 - Tidak ada commit baru: data sama seperti scrape pagi (Morphe terakhir update 4 Nov 2026) — sesuai harapan.
 - Warning: Node.js 20 deprecated, actions dipaksa jalan di Node.js 24 (tidak menghambat).
 
+## Mirror unduhan — GitLab sumber mati (21 Nov 2026, 11.10–13.30 WIB)
+
+- Laporan Zan 11.10 WIB: tombol Download di morphe.nazuaf.com mengembalikan 404. Diverifikasi: URL GitLab yang kita simpan sama persis dengan tautan live morpheapk.com, tapi proyek GitLab 87288318 sudah tidak publik lagi (API: 404 Project Not Found; unduh paket: 401; pencarian GitLab: kosong). Repo builder asli RookieEnough/Morphe-AutoBuilds juga sudah tanpa releases. Jadi yang mati adalah sumbernya, bukan situs kita.
+- Riset mirror (browser.search + GitHub API + curl range request): fork-fork Morphe-AutoBuilds masih hidup. Yang dipakai: **Purple-Drain** (utama), Macka323, rpeters1430, toidicakhia. Alternatif lain yang dicek tapi tidak dipakai: krvstek/uni-apks (hanya YouTube/Music/Reddit, 3 aplikasi), X-Abhishek-X/Morphe-Automated-Build-Scripts (27 aset, hanya 5 versi sama persis), vanced.to (target tombol download tidak bisa diekstrak).
+- Pemetaan: `scripts/map-mirrors.mjs` membaca daftar aset rilis `latest` tiap fork lalu mencocokkan per aplikasi (aturan: versi sama persis dulu, kalau tidak ada ambil versi terbaru; arsitektur universal > arm64-v8a). Hasil 21 Nov 13.20 WIB: **100/100 aplikasi tercakup, 84 versi sama persis** (Purple-Drain 76, Macka323 6, rpeters1430 16, toidicakhia 2). 9 URL contoh dites dengan range request: semua HTTP 206.
+- Implementasi: `data/mirror-urls.json` (statis, hasil map-mirrors) digabung saat build oleh `scripts/lib/mirror.mjs` — jadi sync harian dari morpheapk.com tidak menghapus pemetaan. `scripts/lib/render.mjs`: tombol Download memakai URL mirror kalau ada, plus catatan "mirror ditandatangani kunci berbeda, hapus instalasi lama dulu" dan versi mirror kalau berbeda dari versi di halaman. URL GitLab lama tetap tersimpan di `data/apps.json` sebagai fallback kalau suatu hari pulih.
+- Tes: 23/23 lolos (16 lama + 7 baru di `test/mirror.test.mjs`: prioritas exact, normalisasi underscore, versi berisi `-arm64-v8a`, merge build, render mirror/tanpa mirror).
+- Build lokal: 100 aplikasi → `public/`, 100/100 halaman detail memakai mirror + catatan uninstall.
+- Catatan: rilis `latest` bersifat rolling — URL mirror bisa 404 kalau versinya naik; pemetaan perlu dijalankan ulang berkala (`node scripts/map-mirrors.mjs`, daftar aset di `/tmp/mirror-assets/` perlu di-refresh dulu dari GitHub API).
+
 ## Yang belum terverifikasi
 
 - Run ke-2 tanpa perubahan data (tidak ada commit baru). Dijadwalkan otomatis oleh cron workflow pukul 00.00 WIB (17.00 UTC); Muse tidak bisa memicu dispatch sendiri — verifikasi menyusul dari run cron pertama.

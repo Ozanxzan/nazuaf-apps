@@ -64,6 +64,12 @@ export function renderDetail(app) {
     ['Root', app.root === false ? 'Tidak perlu' : app.root === true ? 'Perlu' : null],
   ].filter(([, v]) => v);
   const rowsHtml = rows.map(([k, v]) => `<li><span>${esc(k)}</span><span>${esc(v)}</span></li>`).join('');
+  // Tombol Download memakai mirror GitHub kalau ada (tautan GitLab sumber mati
+  // sejak Nov 2026); kalau tidak ada mirror, tetap pakai download_url asli.
+  const dlUrl = app.download_mirror_url || app.download_url;
+  const mirrorNote = app.download_mirror_url
+    ? `<p class="note">Unduhan dari mirror GitHub ${esc(app.mirror_source)}${app.mirror_version && app.mirror_version !== app.version ? ` — file yang diunduh adalah v${esc(app.mirror_version)}` : ''}. Tautan asli GitLab morpheapk.com sedang tidak bisa diakses. Mirror ditandatangani dengan kunci berbeda, jadi hapus instalasi lama sebelum memasang versi ini.</p>`
+    : `<p class="note">APK dibuat pipeline komunitas AutoBuilds, bukan oleh tim Morphe maupun situs ini. Link diteruskan ke sumber aslinya dan di-refresh beberapa kali sehari. Pasang dengan risiko sendiri.</p>`;
   const body = `
     <nav class="crumbs"><a href="/">Semua Aplikasi</a> / ${esc(app.name)}</nav>
     <section class="detail-head">
@@ -71,8 +77,8 @@ export function renderDetail(app) {
       <div><h1>${esc(app.name)}</h1><p class="detail-meta">${esc(app.category || '')} · v${esc(app.version || '')} · ${esc(formatDateId(app.updated))}</p>
       <p>${esc(app.description || '')}</p></div>
     </section>
-    <a class="btn-download" href="${esc(app.download_url)}" target="_blank" rel="noopener nofollow">Download APK${app.size_mb ? ` (${esc(app.size_mb)} MB)` : ''}</a>
-    <p class="note">APK dibuat pipeline komunitas AutoBuilds, bukan oleh tim Morphe maupun situs ini. Link diteruskan ke sumber aslinya dan di-refresh beberapa kali sehari. Pasang dengan risiko sendiri.</p>
+    <a class="btn-download" href="${esc(dlUrl)}" target="_blank" rel="noopener nofollow">Download APK${app.size_mb ? ` (${esc(app.size_mb)} MB)` : ''}</a>
+    ${mirrorNote}
     <section><h2>Detail aplikasi</h2><ul class="info">${rowsHtml}</ul></section>
     ${app.description_html ? `<section class="about">${app.description_html}</section>` : ''}
     <p><a href="${esc(app.source_url)}" target="_blank" rel="noopener">Lihat di Morphe →</a></p>`;
