@@ -122,3 +122,107 @@ test('loadMirrors/applyMirrors tahan kalau file tidak ada', () => {
   const apps2 = applyMirrors([{ slug: 'morphe-youtube' }], {});
   assert.deepEqual(apps2, [{ slug: 'morphe-youtube' }]);
 });
+
+// --- refresh live dari GitHub API ---
+
+import { fetchForkAssets, refreshMirrors } from '../scripts/map-mirrors.mjs';
+
+function stubFetchFactory(assetNamesByFork = {}) {
+  const calls = [];
+  const stub = async (url) => {
+    calls.push(url);
+    const m = url.match(/repos\/([^/]+)\/Morphe-AutoBuilds\/releases\/tags\/latest/);
+    if (m) return { ok: true, json: async () => ({ id: 999 }) };
+    const a = url.match(/repos\/([^/]+)\/Morphe-AutoBuilds\/releases\/999\/assets\?per_page=100&page=(\d+)/);
+    if (a) {
+      const page = Number(a[2]);
+      const names = page === 1 ? (assetNamesByFork[a[1]] || []) : [];
+      return { ok: true, json: async () => names.map((n) => ({ name: n, browser_download_url: `https://github.com/${a[1]}/x/${n}` })) };
+    }
+    return { ok: false, status: 404, json: async () => ({}) };
+  };
+  stub.calls = calls;
+  return stub;
+}
+
+const LIVE_ASSETS = {
+  'Purple-Drain': [
+    'youtube-universal-morphe-v21.30.216.apk',
+    'instagram-arm64-v8a-piko-patches-v452.1.0.53.64.apk',
+    'instagram-arm64-v8a-piko-patches-v452.1.0.53.64.apk.sha256',
+  ],
+  Macka323: ['instagram-arm64-v8a-piko-patches-v447.0.0.55.81.apk'],
+};
+
+test('fetchForkAssets ambil rilis latest + paginasi aset, .sha256 dibuang', async () => {
+  const stub = stubFetchFactory(LIVE_ASSETS);
+  const out = await fetchForkAssets(stub);
+  assert.equal(out['Purple-Drain'].length, 2);
+  assert.equal(out['Purple-Drain'][0].key, 'youtube');
+  assert.equal(out.Macka323.length, 1);
+  assert.equal(out.Macka323[0].version, '447.0.0.55.81');
+  assert.ok(stub.calls.some((u) => u.includes('/releases/tags/latest')));
+  assert.ok(stub.calls.some((u) => u.includes('/releases/999/assets?per_page=100&page=1')));
+});
+
+test('refreshMirrors tulis file + hitung URL berubah', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'nazuaf-refresh-'));
+  const outPath = join(dir, 'mirror-urls.json');
+  writeFileSync(outPath, JSON.stringify({ mirrors: { 'morphe-youtube': { url: 'https://github.com/OLD/x.apk', source: 'Purple-Drain', version: '21.30.216', arch: 'universal', exact: true } } }));
+  const stub = stubFetchFactory(LIVE_ASSETS);
+  const { report, changed } = await refreshMirrors({
+    apps: [{ slug: 'morphe-youtube', version: '21.30.216' }, { slug: 'morphe-instagram', version: '447.0.0.55.81' }],
+    fetchFn: stub, outPath, minCoverage: 2,
+  });
+  assert.equal(report.covered, 2);
+  assert.equal(changed, 2); // youtube URL berubah, instagram baru
+  const saved = JSON.parse(readFileSync(outPath, 'utf8'));
+  assert.equal(saved.mirrors['morphe-youtube'].url, 'https://github.com/Purple-Drain/x/youtube-universal-morphe-v21.30.216.apk');
+  assert.equal(saved.mirrors['morphe-instagram'].source, 'Macka323');
+});
+
+test('refreshMirrors TIDAK menimpa file kalau cakupan di bawah ambang', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'nazuaf-refresh-'));
+  const outPath = join(dir, 'mirror-urls.json');
+  const oldContent = JSON.stringify({ mirrors: { 'morphe-youtube': { url: 'https://github.com/OLD/x.apk' } } });
+  writeFileSync(outPath, oldContent);
+  const stub = stubFetchFactory({ 'Purple-Drain': ['youtube-universal-morphe-v21.30.216.apk'] });
+  await assert.rejects(
+    refreshMirrors({
+      apps: [{ slug: 'morphe-youtube', version: '21.30.216' }, { slug: 'morphe-instagram', version: '447.0.0.55.81' }, { slug: 'morphe-tiktok', version: '46.2.3' }],
+      fetchFn: stub, outPath, minCoverage: 3,
+    }),
+    /di bawah ambang/,
+  );
+  assert.equal(readFileSync(outPath, 'utf8'), oldContent);
+});
+
+test('refreshMirrors lempar kalau API gagal; pemetaan lama aman', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'nazuaf-refresh-'));
+  const outPath = join(dir, 'mirror-urls.json');
+  writeFileSync(outPath, JSON.stringify({ mirrors: {} }));
+  const failing = async () => { throw new Error('jaringan putus'); };
+  await assert.rejects(
+    refreshMirrors({ apps: [{ slug: 'morphe-youtube', version: '21.30.216' }], fetchFn: failing, outPath, minCoverage: 1 }),
+    /jaringan putus/,
+  );
+});
+
+test('buildSite dengan refreshMirrors pakai pemetaan live; gagal fetch → fallback file lama', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'nazuaf-build-refresh-'));
+  const dataPath = join(dir, 'apps.json');
+  const outDir = join(dir, 'public');
+  const app = { slug: 'morphe-youtube', name: 'Morphe YouTube', version: '21.30.216', updated: '2026-11-04', category: 'Video', size_mb: 140, android_min: '9.0', arch: 'Universal', root: false, patch_bundle: '2.0.0', description: 'Test', description_html: null, icon: '/icons/morphe-youtube.webp', download_url: 'https://gitlab.com/x.apk', popular: true, source_url: 'https://morpheapk.com/morphe-youtube/', scraped_at: '2026-11-21T00:00:00Z' };
+  writeFileSync(dataPath, JSON.stringify({ apps: [app], generated_at: '2026-11-21T00:00:00Z' }));
+  writeFileSync(join(dir, 'mirror-urls.json'), JSON.stringify({ mirrors: { 'morphe-youtube': { url: 'https://github.com/OLD/x.apk', source: 'Purple-Drain', version: '21.30.216', arch: 'universal', exact: true } } }));
+  // Live berhasil → URL baru dipakai.
+  await buildSite({ dataPath, outDir, refreshMirrors: true, fetchFn: stubFetchFactory(LIVE_ASSETS) });
+  let detail = readFileSync(join(outDir, 'apps', 'morphe-youtube', 'index.html'), 'utf8');
+  assert.ok(detail.includes('github.com/Purple-Drain/x/youtube-universal-morphe-v21.30.216.apk'));
+  // Live gagal → fallback ke file lama (kembalikan dulu URL lama ke file).
+  writeFileSync(join(dir, 'mirror-urls.json'), JSON.stringify({ mirrors: { 'morphe-youtube': { url: 'https://github.com/OLD/x.apk', source: 'Purple-Drain', version: '21.30.216', arch: 'universal', exact: true } } }));
+  const failing = async () => { throw new Error('jaringan putus'); };
+  await buildSite({ dataPath, outDir, refreshMirrors: true, fetchFn: failing });
+  detail = readFileSync(join(outDir, 'apps', 'morphe-youtube', 'index.html'), 'utf8');
+  assert.ok(detail.includes('github.com/OLD/x.apk'));
+});

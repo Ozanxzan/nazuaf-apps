@@ -2,32 +2,34 @@
 // Sumber GitLab morpheapk.com mati (proyek 87288318 tidak lagi publik, Nov 2026).
 // Script ini membaca daftar aset rilis "latest" tiap fork lalu mencocokkan
 // per aplikasi berdasarkan nama file; hasilnya disimpan ke data/mirror-urls.json
-// dan digabung saat build (lihat build.mjs) — jadi sync harian dari morpheapk.com
-// tidak menghapus pemetaan ini.
+// dan digabung saat build (lihat build.mjs + lib/mirror.mjs) — jadi sync harian
+// dari morpheapk.com tidak menghapus pemetaan ini.
 //
-// Penggunaan:
-//   1) Unduh daftar aset dulu (tanpa auth, repo publik):
-//      for r in Purple-Drain Macka323 rpeters1430 toidicakhia; do
-//        curl -s "https://api.github.com/repos/$r/Morphe-AutoBuilds/releases?per_page=100" \
-//          | python3 -c "..." > /tmp/mirror-assets/$r.json
-//      done
-//      (format tiap baris: <nama-file>\t<browser_download_url>\t<updated_at>)
-//   2) node scripts/map-mirrors.mjs --assets-dir /tmp/mirror-assets
+// Cara pakai:
+//   node scripts/map-mirrors.mjs                     (ambil daftar aset live dari GitHub API, tanpa auth)
+//   node scripts/map-mirrors.mjs --assets-dir DIR    (baca daftar aset dari file TSV lokal, format per baris: <nama-file>\t<url>\t<updated_at>)
+//   MIRROR_REFRESH=1 node scripts/build.mjs         (build juga memetakan ulang live sebelum render)
 //
 // Prioritas fork: Purple-Drain (utama, paling segar) → Macka323 (versi paling
 // cocok dengan data kita) → rpeters1430 → toidicakhia (difilter: hanya nama file
 // hasil patch, APK stok APKMirror tidak cocok pola dan otomatis terlewat).
-// Dalam satu fork: versi sama persis dengan data kita diutamakan; kalau tidak
-// ada, versi terbaru. Arsitektur diutamakan: universal > arm64-v8a > armeabi-v7a.
+// Aturan pilih: (1) versi sama persis dengan data situs, urutan prioritas fork;
+// (2) kalau tidak ada yang sama persis, versi terbaru dari semua fork.
+// Arsitektur diutamakan: universal > arm64-v8a > armeabi-v7a.
 // URL rpeters1430 mengandung hash commit dan bisa 404 setelah rebuild — hanya
 // dipakai kalau ketiga fork lain tidak punya aplikasi itu.
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+//
+// Guard: pemetaan TIDAK ditulis kalau cakupan < 95/100 atau API gagal —
+// pemetaan lama dipertahankan supaya situs tidak rusak. Build memakai
+// pemetaan lama itu sebagai fallback kalau fetch live gagal.
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const FORKS = ['Purple-Drain', 'Macka323', 'rpeters1430', 'toidicakhia'];
 const ARCH_RANK = { universal: 0, 'arm64-v8a': 1, 'armeabi-v7a': 2, all: 3 };
+const MIN_COVERAGE = 0.95; // fraksi minimal aplikasi tercakup (95% dari daftar)
 
 // <key>-<arch>-<patch>-v<version>.apk  (contoh: instagram-arm64-v8a-piko-patches-v452.1.0.53.64.apk)
 // Grup patch dibuat non-greedy: versi bisa mengandung "-arm64-v8a" sendiri
@@ -59,8 +61,7 @@ function cmpVersion(a, b) {
   return 0;
 }
 
-function parseAsset(line) {
-  const [name, url] = line.split('\t');
+function parseAsset(name, url) {
   if (!name || !url || !name.endsWith('.apk')) return null;
   const m = ASSET_RE.exec(name);
   if (!m) return null;
@@ -78,7 +79,37 @@ function loadForkAssets(dir) {
       console.warn(`lewat: ${file} tidak ada`);
       continue;
     }
-    out[fork] = lines.map(parseAsset).filter(Boolean);
+    out[fork] = lines.map((l) => {
+      const [name, url] = l.split('\t');
+      return parseAsset(name, url);
+    }).filter(Boolean);
+  }
+  return out;
+}
+
+const GH_HEADERS = { Accept: 'application/vnd.github+json', 'User-Agent': 'nazuaf-apps-mirror-mapper' };
+
+// Ambil semua aset rilis "latest" tiap fork lewat GitHub API (repo publik, tanpa auth).
+// 1) GET /releases/tags/latest → id rilis; 2) GET /releases/{id}/assets (paginasi 100/hal).
+export async function fetchForkAssets(fetchFn = fetch) {
+  const out = {};
+  for (const fork of FORKS) {
+    const relRes = await fetchFn(`https://api.github.com/repos/${fork}/Morphe-AutoBuilds/releases/tags/latest`, { headers: GH_HEADERS });
+    if (!relRes.ok) throw new Error(`GitHub API ${fork}: HTTP ${relRes.status}`);
+    const rel = await relRes.json();
+    const assets = [];
+    for (let page = 1; page <= 3; page++) {
+      const res = await fetchFn(`https://api.github.com/repos/${fork}/Morphe-AutoBuilds/releases/${rel.id}/assets?per_page=100&page=${page}`, { headers: GH_HEADERS });
+      if (!res.ok) throw new Error(`GitHub API ${fork} assets p${page}: HTTP ${res.status}`);
+      const list = await res.json();
+      if (!Array.isArray(list) || list.length === 0) break;
+      for (const a of list) {
+        const parsed = parseAsset(a.name, a.browser_download_url);
+        if (parsed) assets.push(parsed);
+      }
+      if (list.length < 100) break;
+    }
+    out[fork] = assets;
   }
   return out;
 }
@@ -129,23 +160,50 @@ export function mapMirrors(apps, forkAssets) {
   return { mirrors, report };
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
-  const dirIdx = process.argv.indexOf('--assets-dir');
-  const assetsDir = dirIdx >= 0 ? process.argv[dirIdx + 1] : '/tmp/mirror-assets';
-  const data = JSON.parse(readFileSync(join(ROOT, 'data', 'apps.json'), 'utf8'));
-  const forkAssets = loadForkAssets(assetsDir);
-  const { mirrors, report } = mapMirrors(data.apps, forkAssets);
+// Petakan ulang mirror untuk daftar aplikasi; tulis file hanya kalau cakupan
+// memenuhi ambang. minCoverage: fraksi 0..1 (default 0.95) atau jumlah absolut.
+// Mengembalikan { mirrors, report, changed }.
+// Melempar Error kalau fetch gagal atau cakupan di bawah ambang — pemanggil
+// wajib menangkap dan mempertahankan pemetaan lama.
+export async function refreshMirrors({ apps, fetchFn = fetch, assetsDir = null, outPath, minCoverage = MIN_COVERAGE }) {
+  const forkAssets = assetsDir ? loadForkAssets(assetsDir) : await fetchForkAssets(fetchFn);
+  const { mirrors, report } = mapMirrors(apps, forkAssets);
+  const threshold = minCoverage <= 1 ? Math.ceil(apps.length * minCoverage) : minCoverage;
+  if (report.covered < threshold) {
+    throw new Error(`cakupan mirror ${report.covered}/${apps.length} di bawah ambang ${threshold}; pemetaan lama dipertahankan`);
+  }
+  let changed = 0;
+  let old = {};
+  try {
+    old = JSON.parse(readFileSync(outPath, 'utf8')).mirrors || {};
+  } catch { /* belum ada file */ }
+  for (const [slug, m] of Object.entries(mirrors)) {
+    if (!old[slug] || old[slug].url !== m.url) changed++;
+  }
   const out = {
     generated_at: new Date().toISOString(),
     note: 'Pemetaan mirror unduhan (GitLab sumber mati Nov 2026). Digabung saat build; jangan edit manual, jalankan ulang script ini.',
     mirrors,
   };
-  writeFileSync(join(ROOT, 'data', 'mirror-urls.json'), JSON.stringify(out, null, 2) + '\n');
-  console.log(`mirror: ${report.covered}/${data.apps.length} aplikasi tercakup, ${report.exact} versi sama persis`);
-  console.log('per sumber:', JSON.stringify(report.bySource));
-  if (report.unmatched.length) console.log('TIDAK ADA MIRROR:', report.unmatched.join(', '));
-  if (report.mismatched.length) {
-    console.log(`versi mirror berbeda (${report.mismatched.length}):`);
-    for (const m of report.mismatched) console.log('  ', m);
+  writeFileSync(outPath, JSON.stringify(out, null, 2) + '\n');
+  return { mirrors, report, changed };
+}
+
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const dirIdx = process.argv.indexOf('--assets-dir');
+  const assetsDir = dirIdx >= 0 ? process.argv[dirIdx + 1] : null;
+  const data = JSON.parse(readFileSync(join(ROOT, 'data', 'apps.json'), 'utf8'));
+  try {
+    const { report, changed } = await refreshMirrors({ apps: data.apps, assetsDir, outPath: join(ROOT, 'data', 'mirror-urls.json') });
+    console.log(`mirror: ${report.covered}/${data.apps.length} aplikasi tercakup, ${report.exact} versi sama persis, ${changed} URL berubah`);
+    console.log('per sumber:', JSON.stringify(report.bySource));
+    if (report.unmatched.length) console.log('TIDAK ADA MIRROR:', report.unmatched.join(', '));
+    if (report.mismatched.length) {
+      console.log(`versi mirror berbeda (${report.mismatched.length}):`);
+      for (const m of report.mismatched) console.log('  ', m);
+    }
+  } catch (err) {
+    console.error(`mirror: GAGAL (${err.message})`);
+    process.exit(2);
   }
 }
