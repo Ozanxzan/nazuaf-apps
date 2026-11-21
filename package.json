@@ -1,4 +1,16 @@
 {
+  "description": "Mirror daftar aplikasi Morphe (morphe.nazuaf.com) \u2014 data dari morpheapk.com, sinkron otomatis via GitHub Actions, deploy Cloudflare Pages.",
+  "engines": {
+    "node": ">=20"
+  },
   "name": "nazuaf-apps",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "scrape": "node scripts/scrape.mjs",
+    "test": "node --test test/*.test.mjs",
+    "build:pages": "node scripts/download-icons.mjs && node scripts/build.mjs"
+  },
+  "type": "module",
   "version": "1.0.0"
 }
