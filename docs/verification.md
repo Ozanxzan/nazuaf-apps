@@ -91,6 +91,11 @@
 - Verifikasi: 31/31 tes lolos; build lokal: 0 kemunculan teks lama di seluruh `public/`.
 - Keputusan Zan (21 Nov 14.25 WIB): katalog dari mirror (lepas total dari morpheapk.com) baru dibangun kalau morpheapk.com benar-benar tutup; untuk sekarang scrape Morphe 3x sehari tetap jalan.
 
+## Ukuran file MB desimal (21 Nov 2026, 14.40 WIB)
+
+- Laporan Zan: ukuran di tombol download tidak akurat dibanding file yang benar-benar terunduh. Penyebab: `scripts/map-mirrors.mjs` menghitung MB biner (byte ÷ 1.048.576, MiB) tapi berlabel "MB", sementara Android/browser menampilkan MB desimal (byte ÷ 1.000.000). Contoh YouTube: file asli 142.967.578 byte = 142,97 MB desimal, tapi situs menampilkan 136,34 MB.
+- Perbaikan: konversi diubah ke MB desimal (`sizeBytes / 1e6`); `data/mirror-urls.json` dibuat ulang dari API GitHub (cakupan tetap 100/100). Verifikasi: YouTube tampil 142,97 MB vs file asli 142,968 MB; Instagram tampil 144,48 MB vs file asli 144.483.804 byte = 144,48 MB — cocok persis.
+
 ## Yang belum terverifikasi
 
 - Run ke-2 tanpa perubahan data (tidak ada commit baru). Dijadwalkan otomatis oleh cron workflow pukul 00.00 WIB (17.00 UTC); Muse tidak bisa memicu dispatch sendiri — verifikasi menyusul dari run cron pertama.

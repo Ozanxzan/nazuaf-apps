@@ -68,7 +68,7 @@ function parseAsset(name, url, updatedAt, sizeBytes) {
   return {
     key: m[1].replace(/_/g, '-'), arch: m[2], version: m[4], name, url,
     updated: updatedAt ? String(updatedAt).slice(0, 10) : null,
-    size_mb: sizeBytes ? Math.round((sizeBytes / 1048576) * 100) / 100 : null,
+    size_mb: sizeBytes ? Math.round((sizeBytes / 1e6) * 100) / 100 : null,
   };
 }
 
