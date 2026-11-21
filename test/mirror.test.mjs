@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { mapMirrors } from '../scripts/map-mirrors.mjs';
 import { loadMirrors, applyMirrors } from '../scripts/lib/mirror.mjs';
-import { renderDetail } from '../scripts/lib/render.mjs';
+import { renderDetail, renderIndex } from '../scripts/lib/render.mjs';
 import { buildSite } from '../scripts/build.mjs';
 
 const apps = [
@@ -254,4 +254,28 @@ test('buildSite dengan refreshMirrors pakai pemetaan live; gagal fetch → fallb
   await buildSite({ dataPath, outDir, refreshMirrors: true, fetchFn: failing });
   detail = readFileSync(join(outDir, 'apps', 'morphe-youtube', 'index.html'), 'utf8');
   assert.ok(detail.includes('github.com/OLD/x.apk'));
+});
+
+test('header: nav berisi Blog nazuaf.com + pencarian oval, tanpa Semua Aplikasi', () => {
+  const html = renderIndex(
+    [{ slug: 'morphe-youtube', name: 'Morphe YouTube', version: '21.30.216', updated: '2026-11-04', category: 'Video', description: 'Test', icon: '/icons/morphe-youtube.webp', popular: false }],
+    '2026-11-21T00:00:00Z',
+  );
+  const nav = html.match(/<nav class="site-nav">([\s\S]*?)<\/nav>/)[1];
+  assert.ok(nav.includes('Blog nazuaf.com'));
+  assert.ok(!nav.includes('Semua Aplikasi'));
+  assert.ok(nav.includes('<form class="site-search" action="/" method="get"'));
+  assert.ok(nav.includes('type="search" name="q"'));
+  assert.ok(nav.includes('<svg'));
+  assert.ok(!nav.includes('>Search<') && !nav.includes('>Cari<'));
+  // Pencarian header ikut memfilter + membaca ?q= dari URL.
+  assert.ok(html.includes("new URLSearchParams(location.search).get('q')"));
+  assert.ok(html.includes("document.querySelector('.site-search input')"));
+});
+
+test('css: Blog dan pencarian lebar sama (flex 1 1 0), pencarian oval', () => {
+  const css = readFileSync(new URL('../public/assets/style.css', import.meta.url), 'utf8');
+  assert.ok(css.includes('.site-nav>a,.site-nav>.site-search{flex:1 1 0'));
+  assert.ok(css.includes('.site-search{display:flex'));
+  assert.ok(css.includes('.site-search input{flex:1'));
 });

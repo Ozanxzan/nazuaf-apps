@@ -11,7 +11,7 @@ export function formatDateId(iso) {
 }
 
 function shell({ title, desc, body, extraHead = '' }) {
-  return `<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(desc)}"><link rel="stylesheet" href="/assets/style.css">${extraHead}</head><body><header class="site-header"><div class="wrap"><a class="brand" href="/"><span class="brand-mark">n</span><span class="brand-text">morphe<span>.nazuaf.com</span></span></a><nav class="site-nav"><a href="/">Semua Aplikasi</a><a href="https://nazuaf.com">Blog nazuaf.com</a></nav></div></header><main class="wrap">${body}</main><footer class="site-footer"><div class="wrap"><p>APK dibuat pipeline komunitas AutoBuilds, bukan oleh tim Morphe maupun situs ini. Unduh dan pasang dengan risiko sendiri.</p><p><a href="https://nazuaf.com">nazuaf.com</a> — Teknologi, Informasi, dan Inspirasi Digital.</p></div></footer></body></html>`;
+  return `<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(desc)}"><link rel="stylesheet" href="/assets/style.css">${extraHead}</head><body><header class="site-header"><div class="wrap"><a class="brand" href="/"><span class="brand-mark">n</span><span class="brand-text">morphe<span>.nazuaf.com</span></span></a><nav class="site-nav"><a href="https://nazuaf.com">Blog nazuaf.com</a><form class="site-search" action="/" method="get" role="search"><input type="search" name="q" placeholder="Cari aplikasi..." aria-label="Cari aplikasi"><button type="submit" aria-label="Cari"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></button></form></nav></div></header><main class="wrap">${body}</main><footer class="site-footer"><div class="wrap"><p>APK dibuat pipeline komunitas AutoBuilds, bukan oleh tim Morphe maupun situs ini. Unduh dan pasang dengan risiko sendiri.</p><p><a href="https://nazuaf.com">nazuaf.com</a> — Teknologi, Informasi, dan Inspirasi Digital.</p></div></footer></body></html>`;
 }
 
 export function renderIndex(apps, generatedAt) {
@@ -38,7 +38,8 @@ export function renderIndex(apps, generatedAt) {
       const q = document.getElementById('q');
       const list = document.getElementById('appsList');
       const noResult = document.getElementById('noResult');
-      q.addEventListener('input', () => {
+      const headerQ = document.querySelector('.site-search input');
+      function applyFilter() {
         const needle = q.value.trim().toLowerCase();
         let shown = 0;
         for (const card of list.children) {
@@ -47,7 +48,11 @@ export function renderIndex(apps, generatedAt) {
           if (hit) shown++;
         }
         noResult.hidden = shown > 0;
-      });
+      }
+      q.addEventListener('input', () => { if (headerQ) headerQ.value = q.value; applyFilter(); });
+      if (headerQ) headerQ.addEventListener('input', () => { q.value = headerQ.value; applyFilter(); });
+      const initial = new URLSearchParams(location.search).get('q');
+      if (initial) { q.value = initial; if (headerQ) headerQ.value = initial; applyFilter(); }
     </script>`;
   return shell({ title: 'Aplikasi Morphe — morphe.nazuaf.com', desc: `Daftar ${apps.length} aplikasi Android pre-patched Morphe, diperbarui otomatis.`, body });
 }

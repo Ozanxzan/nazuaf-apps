@@ -79,6 +79,12 @@
 - Perubahan di `scripts/lib/render.mjs`: hero kini hanya "Terakhir diperbarui: ..."; meta description halaman utama menjadi "diperbarui otomatis." (tanpa "dari morpheapk.com"); baris tautan "Lihat di Morphe →" dihapus dari halaman detail.
 - Verifikasi: 29/29 tes lolos. Sisa penyebutan morpheapk.com di `public/` tinggal 16 — semuanya klausul versi di catatan download ("morpheapk.com still lists vY") pada 16 aplikasi yang versinya berbeda dari data Morphe.
 
+## Header: Blog + pencarian oval (21 Nov 2026, 14.15 WIB)
+
+- Permintaan Zan (dari tangkapan layar halaman Truecaller): hapus tulisan "Semua Aplikasi" di navigasi header, ganti jadi "Blog nazuaf.com"; yang "Blog nazuaf.com" diganti jadi pencarian berbentuk oval dengan kaca pembesar (bukan kata "search"); lebar keduanya sama.
+- Perubahan: `scripts/lib/render.mjs` — nav kini `<a>Blog nazuaf.com</a>` + `<form class="site-search" action="/" method="get">` berisi input `type="search" name="q"` dan tombol ikon SVG kaca pembesar (tanpa teks). `public/assets/style.css` — `.site-nav>a, .site-nav>.site-search { flex: 1 1 0 }` (lebar sama persis); di layar ≤640px nav memenuhi lebar penuh. Pencarian header mengirim ke `/?q=...`; skrip halaman utama membaca `?q=`, mengisi kedua kotak pencarian, dan memfilter daftar (kedua kotak saling sinkron saat mengetik). Breadcrumb "Semua Aplikasi / ..." di halaman detail tetap ada sebagai jalan pulang; logo juga tetap tautan ke beranda.
+- Verifikasi: 31/31 tes lolos (29 lama + 2 baru: isi nav dan aturan CSS lebar sama). Build lokal: nav ter-render sesuai rancangan di semua halaman.
+
 ## Yang belum terverifikasi
 
 - Run ke-2 tanpa perubahan data (tidak ada commit baru). Dijadwalkan otomatis oleh cron workflow pukul 00.00 WIB (17.00 UTC); Muse tidak bisa memicu dispatch sendiri — verifikasi menyusul dari run cron pertama.
