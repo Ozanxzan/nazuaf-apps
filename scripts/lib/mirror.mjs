@@ -5,8 +5,9 @@
 //
 // Versi yang tampil mengikuti file mirror: nama + versi di halaman HARUS sama
 // dengan file yang diunduh. Jadi kalau ada mirror, app.version diganti dengan
-// versi mirror (aslinya disimpan di morphe_version), begitu juga ukuran file;
-// tanggal update ikut tanggal file mirror kalau versinya berbeda dari data Morphe.
+// versi mirror (aslinya disimpan di morphe_version), begitu juga ukuran file
+// dan tanggal update — tanggal selalu ikut tanggal file mirror, bukan tanggal
+// di data Morphe (Morphe menandai 66 aplikasi sekaligus 4 Nov 2026).
 import { readFileSync, existsSync } from 'node:fs';
 
 export function loadMirrors(mirrorPath) {
@@ -34,7 +35,7 @@ export function applyMirrors(apps, mirrors) {
     if (m.version) {
       out.morphe_version = app.version;
       out.version = m.version;
-      if (!out.mirror_exact && m.updated) out.updated = m.updated;
+      if (m.updated) out.updated = m.updated;
       if (m.size_mb) out.size_mb = m.size_mb;
     }
     return out;

@@ -136,12 +136,12 @@ test('applyMirrors: versi + ukuran + tanggal tampil mengikuti file mirror', () =
   assert.equal(over.size_mb, 95.5);
   assert.equal(over.updated, '2026-11-16');
   assert.equal(over.mirror_exact, false);
-  // Mirror sama persis → versi tetap, tanggal Morphe dipertahankan.
+  // Mirror sama persis → versi tetap, tapi tanggal ikut file mirror.
   const [same] = applyMirrors([base], {
     'morphe-crunchyroll': { url: 'https://github.com/Purple-Drain/x/c.apk', source: 'Purple-Drain', version: '3.75.0', arch: 'universal', exact: true, size_mb: 92.14, updated: '2026-10-20' },
   });
   assert.equal(same.version, '3.75.0');
-  assert.equal(same.updated, '2026-11-04');
+  assert.equal(same.updated, '2026-10-20');
   assert.equal(same.mirror_exact, true);
   // Tanpa ukuran/tanggal mirror → nilai Morphe dipertahankan.
   const [noMeta] = applyMirrors([base], {

@@ -96,6 +96,11 @@
 - Laporan Zan: ukuran di tombol download tidak akurat dibanding file yang benar-benar terunduh. Penyebab: `scripts/map-mirrors.mjs` menghitung MB biner (byte ÷ 1.048.576, MiB) tapi berlabel "MB", sementara Android/browser menampilkan MB desimal (byte ÷ 1.000.000). Contoh YouTube: file asli 142.967.578 byte = 142,97 MB desimal, tapi situs menampilkan 136,34 MB.
 - Perbaikan: konversi diubah ke MB desimal (`sizeBytes / 1e6`); `data/mirror-urls.json` dibuat ulang dari API GitHub (cakupan tetap 100/100). Verifikasi: YouTube tampil 142,97 MB vs file asli 142,968 MB; Instagram tampil 144,48 MB vs file asli 144.483.804 byte = 144,48 MB — cocok persis.
 
+## Tanggal Diperbarui ikut file mirror (21 Nov 2026, 15.00 WIB)
+
+- Laporan Zan: semua aplikasi menampilkan "Diperbarui 4 Nov 2026". Penyebab: 66/100 aplikasi memang bertanggal 2026-11-04 di data Morphe, dan `applyMirrors` hanya mengganti tanggal dengan tanggal file mirror kalau versinya berbeda — jadi aplikasi yang versinya sama persis (84/100) tetap memakai tanggal Morphe.
+- Perbaikan: `scripts/lib/mirror.mjs` kini selalu mengganti `updated` dengan tanggal file mirror (`updated_at` dari API GitHub) kalau ada; kalau tidak ada, tanggal Morphe dipertahankan. Verifikasi: TikTok kini 26 Agu 2026 (file Macka323), YouTube 21 Nov 2026, Instagram 21 Okt 2026, Crunchyroll 25 Jun 2026; 0 aplikasi masih menampilkan 4 Nov 2026.
+
 ## Yang belum terverifikasi
 
 - Run ke-2 tanpa perubahan data (tidak ada commit baru). Dijadwalkan otomatis oleh cron workflow pukul 00.00 WIB (17.00 UTC); Muse tidak bisa memicu dispatch sendiri — verifikasi menyusul dari run cron pertama.
