@@ -85,6 +85,12 @@
 - Perubahan: `scripts/lib/render.mjs` — nav kini `<a>Blog nazuaf.com</a>` + `<form class="site-search" action="/" method="get">` berisi input `type="search" name="q"` dan tombol ikon SVG kaca pembesar (tanpa teks). `public/assets/style.css` — `.site-nav>a, .site-nav>.site-search { flex: 1 1 0 }` (lebar sama persis); di layar ≤640px nav memenuhi lebar penuh. Pencarian header mengirim ke `/?q=...`; skrip halaman utama membaca `?q=`, mengisi kedua kotak pencarian, dan memfilter daftar (kedua kotak saling sinkron saat mengetik). Breadcrumb "Semua Aplikasi / ..." di halaman detail tetap ada sebagai jalan pulang; logo juga tetap tautan ke beranda.
 - Verifikasi: 31/31 tes lolos (29 lama + 2 baru: isi nav dan aturan CSS lebar sama). Build lokal: nav ter-render sesuai rancangan di semua halaman.
 
+## Footer bahasa Inggris (21 Nov 2026, 14.25 WIB)
+
+- Permintaan Zan: footer "APK dibuat pipeline komunitas AutoBuilds, bukan oleh tim Morphe maupun situs ini. Unduh dan pasang dengan risiko sendiri." diganti bahasa Inggris: "APKs are built by the community AutoBuilds pipeline, not by the Morphe team or this site. Download and install at your own risk."
+- Verifikasi: 31/31 tes lolos; build lokal: 0 kemunculan teks lama di seluruh `public/`.
+- Keputusan Zan (21 Nov 14.25 WIB): katalog dari mirror (lepas total dari morpheapk.com) baru dibangun kalau morpheapk.com benar-benar tutup; untuk sekarang scrape Morphe 3x sehari tetap jalan.
+
 ## Yang belum terverifikasi
 
 - Run ke-2 tanpa perubahan data (tidak ada commit baru). Dijadwalkan otomatis oleh cron workflow pukul 00.00 WIB (17.00 UTC); Muse tidak bisa memicu dispatch sendiri — verifikasi menyusul dari run cron pertama.
