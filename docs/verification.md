@@ -17,6 +17,12 @@
   - morphe-tiktok: 46.2.3, 2026-11-04 — sama
   - morphe-duolingo: 6.98.4, 2026-11-04 — sama
 
+## Cloudflare Pages (21 Nov 2026, 10.25 WIB)
+
+- Project `nazuaf-apps` dibuat via API: https://nazuaf-apps.pages.dev
+- Source: GitHub Ozanxzan/nazuaf-apps, branch main, auto-deploy aktif.
+- Build command: `node scripts/download-icons.mjs && node scripts/build.mjs`, output `public/`.
+
 ## Yang belum terverifikasi (menunggu repo GitHub)
 
 - Push ke `Ozanxzan/nazuaf-apps` — repo belum dibuat Zan (GitHub App Muse ditolak `create_repository` 403).
