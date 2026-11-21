@@ -1,1 +1,33 @@
+name: Sync Morphe Apps
 
+on:
+  schedule:
+    # UTC — sama dengan 00.00 / 08.00 / 16.00 WIB
+    - cron: '0 17,1,9 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: sync
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm test
+      - run: node scripts/scrape.mjs
+      - run: node scripts/build.mjs
+      - name: Commit kalau ada perubahan data
+        run: |
+          git config user.name "muse-sync"
+          git config user.email "muse-sync@nazuaf.com"
+          git add data/apps.json
+          git diff --cached --quiet || git commit -m "sync: update aplikasi Morphe $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push
