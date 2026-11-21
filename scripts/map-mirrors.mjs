@@ -7,7 +7,7 @@
 //
 // Cara pakai:
 //   node scripts/map-mirrors.mjs                     (ambil daftar aset live dari GitHub API, tanpa auth)
-//   node scripts/map-mirrors.mjs --assets-dir DIR    (baca daftar aset dari file TSV lokal, format per baris: <nama-file>\t<url>\t<updated_at>)
+//   node scripts/map-mirrors.mjs --assets-dir DIR    (baca daftar aset dari file TSV lokal, format per baris: <nama-file>\t<url>\t<updated_at>\t<ukuran-byte-opsional>)
 //   MIRROR_REFRESH=1 node scripts/build.mjs         (build juga memetakan ulang live sebelum render)
 //
 // Prioritas fork: Purple-Drain (utama, paling segar) → Macka323 (versi paling
@@ -61,11 +61,15 @@ function cmpVersion(a, b) {
   return 0;
 }
 
-function parseAsset(name, url) {
+function parseAsset(name, url, updatedAt, sizeBytes) {
   if (!name || !url || !name.endsWith('.apk')) return null;
   const m = ASSET_RE.exec(name);
   if (!m) return null;
-  return { key: m[1].replace(/_/g, '-'), arch: m[2], version: m[4], name, url };
+  return {
+    key: m[1].replace(/_/g, '-'), arch: m[2], version: m[4], name, url,
+    updated: updatedAt ? String(updatedAt).slice(0, 10) : null,
+    size_mb: sizeBytes ? Math.round((sizeBytes / 1048576) * 100) / 100 : null,
+  };
 }
 
 function loadForkAssets(dir) {
@@ -80,8 +84,8 @@ function loadForkAssets(dir) {
       continue;
     }
     out[fork] = lines.map((l) => {
-      const [name, url] = l.split('\t');
-      return parseAsset(name, url);
+      const [name, url, updatedAt, sizeBytes] = l.split('\t');
+      return parseAsset(name, url, updatedAt, sizeBytes ? Number(sizeBytes) : null);
     }).filter(Boolean);
   }
   return out;
@@ -104,7 +108,7 @@ export async function fetchForkAssets(fetchFn = fetch) {
       const list = await res.json();
       if (!Array.isArray(list) || list.length === 0) break;
       for (const a of list) {
-        const parsed = parseAsset(a.name, a.browser_download_url);
+        const parsed = parseAsset(a.name, a.browser_download_url, a.updated_at, a.size);
         if (parsed) assets.push(parsed);
       }
       if (list.length < 100) break;
@@ -151,6 +155,8 @@ export function mapMirrors(apps, forkAssets) {
       version: picked.version,
       arch: picked.arch,
       exact: picked.exact,
+      size_mb: picked.size_mb ?? null,
+      updated: picked.updated ?? null,
     };
     report.covered++;
     if (picked.exact) report.exact++;

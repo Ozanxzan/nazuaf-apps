@@ -71,6 +71,7 @@ test('renderDetail memakai URL mirror + catatan uninstall, versi mirror ditampil
     source_url: 'https://morpheapk.com/morphe-instagram/',
     download_mirror_url: 'https://github.com/Macka323/Morphe-AutoBuilds/releases/download/latest/instagram-arm64-v8a-piko-patches-v447.0.0.55.81.apk',
     mirror_source: 'Macka323', mirror_version: '447.0.0.55.81', mirror_exact: true,
+    morphe_version: '447.0.0.55.81',
   };
   const html = renderDetail(app);
   assert.ok(html.includes('github.com/Macka323/Morphe-AutoBuilds/releases/download/latest/instagram-arm64-v8a-piko-patches-v447.0.0.55.81.apk'));
@@ -78,11 +79,12 @@ test('renderDetail memakai URL mirror + catatan uninstall, versi mirror ditampil
   assert.ok(html.includes('hapus instalasi lama'));
   assert.ok(html.includes('Macka323'));
   // Versi sama persis → tidak ada keterangan versi mirror tambahan.
-  assert.ok(!html.includes('file yang diunduh adalah'));
+  assert.ok(!html.includes('mengikuti file mirror'));
 
-  const newer = { ...app, mirror_version: '452.1.0.53.64', mirror_exact: false };
+  const newer = { ...app, version: '452.1.0.53.64', mirror_version: '452.1.0.53.64', mirror_exact: false };
   const html2 = renderDetail(newer);
-  assert.ok(html2.includes('file yang diunduh adalah v452.1.0.53.64'));
+  assert.ok(html2.includes('mengikuti file mirror (v452.1.0.53.64)'));
+  assert.ok(html2.includes('morpheapk.com masih menampilkan v447.0.0.55.81'));
 });
 
 test('renderDetail tanpa mirror tetap pakai download_url GitLab', () => {
@@ -121,6 +123,33 @@ test('loadMirrors/applyMirrors tahan kalau file tidak ada', () => {
   assert.deepEqual(loadMirrors('/tmp/tidak-ada-mirror-urls.json'), {});
   const apps2 = applyMirrors([{ slug: 'morphe-youtube' }], {});
   assert.deepEqual(apps2, [{ slug: 'morphe-youtube' }]);
+});
+
+test('applyMirrors: versi + ukuran + tanggal tampil mengikuti file mirror', () => {
+  const base = { slug: 'morphe-crunchyroll', name: 'Morphe Crunchyroll', version: '3.75.0', updated: '2026-11-04', size_mb: 92.14 };
+  // Mirror lebih baru → versi, ukuran, tanggal diganti; versi Morphe disimpan.
+  const [over] = applyMirrors([base], {
+    'morphe-crunchyroll': { url: 'https://github.com/Purple-Drain/x/c.apk', source: 'Purple-Drain', version: '3.99.3', arch: 'universal', exact: false, size_mb: 95.5, updated: '2026-11-16' },
+  });
+  assert.equal(over.version, '3.99.3');
+  assert.equal(over.morphe_version, '3.75.0');
+  assert.equal(over.size_mb, 95.5);
+  assert.equal(over.updated, '2026-11-16');
+  assert.equal(over.mirror_exact, false);
+  // Mirror sama persis → versi tetap, tanggal Morphe dipertahankan.
+  const [same] = applyMirrors([base], {
+    'morphe-crunchyroll': { url: 'https://github.com/Purple-Drain/x/c.apk', source: 'Purple-Drain', version: '3.75.0', arch: 'universal', exact: true, size_mb: 92.14, updated: '2026-10-20' },
+  });
+  assert.equal(same.version, '3.75.0');
+  assert.equal(same.updated, '2026-11-04');
+  assert.equal(same.mirror_exact, true);
+  // Tanpa ukuran/tanggal mirror → nilai Morphe dipertahankan.
+  const [noMeta] = applyMirrors([base], {
+    'morphe-crunchyroll': { url: 'https://github.com/Purple-Drain/x/c.apk', source: 'Purple-Drain', version: '3.99.3', arch: 'universal', exact: false, size_mb: null, updated: null },
+  });
+  assert.equal(noMeta.version, '3.99.3');
+  assert.equal(noMeta.size_mb, 92.14);
+  assert.equal(noMeta.updated, '2026-11-04');
 });
 
 // --- refresh live dari GitHub API ---

@@ -68,7 +68,7 @@ export function renderDetail(app) {
   // sejak Nov 2026); kalau tidak ada mirror, tetap pakai download_url asli.
   const dlUrl = app.download_mirror_url || app.download_url;
   const mirrorNote = app.download_mirror_url
-    ? `<p class="note">Unduhan dari mirror GitHub ${esc(app.mirror_source)}${app.mirror_version && app.mirror_version !== app.version ? ` — file yang diunduh adalah v${esc(app.mirror_version)}` : ''}. Tautan asli GitLab morpheapk.com sedang tidak bisa diakses. Mirror ditandatangani dengan kunci berbeda, jadi hapus instalasi lama sebelum memasang versi ini.</p>`
+    ? `<p class="note">Unduhan dari mirror GitHub ${esc(app.mirror_source)}${!app.mirror_exact && app.morphe_version ? ` — versi di halaman ini mengikuti file mirror (v${esc(app.version)}); morpheapk.com masih menampilkan v${esc(app.morphe_version)}` : ''}. Tautan asli GitLab morpheapk.com sedang tidak bisa diakses. Mirror ditandatangani dengan kunci berbeda, jadi hapus instalasi lama sebelum memasang versi ini.</p>`
     : `<p class="note">APK dibuat pipeline komunitas AutoBuilds, bukan oleh tim Morphe maupun situs ini. Link diteruskan ke sumber aslinya dan di-refresh beberapa kali sehari. Pasang dengan risiko sendiri.</p>`;
   const body = `
     <nav class="crumbs"><a href="/">Semua Aplikasi</a> / ${esc(app.name)}</nav>
