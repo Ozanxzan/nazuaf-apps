@@ -11,7 +11,7 @@ export function formatDateId(iso) {
 }
 
 function shell({ title, desc, body, extraHead = '' }) {
-  return `<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(desc)}"><link rel="stylesheet" href="/assets/style.css">${extraHead}</head><body><header class="site-header"><div class="wrap"><a class="brand" href="/"><span class="brand-mark">n</span><span class="brand-text">morphe<span>.nazuaf.com</span></span></a><nav class="site-nav"><a href="/">Semua Aplikasi</a><a href="https://nazuaf.com">Blog nazuaf.com</a><a href="https://morpheapk.com/apps/">Sumber: MorpheAPK</a></nav></div></header><main class="wrap">${body}</main><footer class="site-footer"><div class="wrap"><p>Data dari <a href="https://morpheapk.com/apps/">morpheapk.com</a>. APK dibuat pipeline komunitas AutoBuilds, bukan oleh tim Morphe maupun situs ini. Unduh dan pasang dengan risiko sendiri.</p><p><a href="https://nazuaf.com">nazuaf.com</a> — Teknologi, Informasi, dan Inspirasi Digital.</p></div></footer></body></html>`;
+  return `<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(desc)}"><link rel="stylesheet" href="/assets/style.css">${extraHead}</head><body><header class="site-header"><div class="wrap"><a class="brand" href="/"><span class="brand-mark">n</span><span class="brand-text">morphe<span>.nazuaf.com</span></span></a><nav class="site-nav"><a href="/">Semua Aplikasi</a><a href="https://nazuaf.com">Blog nazuaf.com</a></nav></div></header><main class="wrap">${body}</main><footer class="site-footer"><div class="wrap"><p>APK dibuat pipeline komunitas AutoBuilds, bukan oleh tim Morphe maupun situs ini. Unduh dan pasang dengan risiko sendiri.</p><p><a href="https://nazuaf.com">nazuaf.com</a> — Teknologi, Informasi, dan Inspirasi Digital.</p></div></footer></body></html>`;
 }
 
 export function renderIndex(apps, generatedAt) {
@@ -68,7 +68,7 @@ export function renderDetail(app) {
   // sejak Nov 2026); kalau tidak ada mirror, tetap pakai download_url asli.
   const dlUrl = app.download_mirror_url || app.download_url;
   const mirrorNote = app.download_mirror_url
-    ? `<p class="note">Unduhan dari mirror GitHub ${esc(app.mirror_source)}${!app.mirror_exact && app.morphe_version ? ` — versi di halaman ini mengikuti file mirror (v${esc(app.version)}); morpheapk.com masih menampilkan v${esc(app.morphe_version)}` : ''}. Tautan asli GitLab morpheapk.com sedang tidak bisa diakses. Mirror ditandatangani dengan kunci berbeda, jadi hapus instalasi lama sebelum memasang versi ini.</p>`
+    ? `<p class="note">Download from the ${esc(app.mirror_source)} GitHub mirror${!app.mirror_exact && app.morphe_version ? ` — the version shown follows the mirror file (v${esc(app.version)}); morpheapk.com still lists v${esc(app.morphe_version)}` : ''}. The mirror is signed with a different key, so uninstall the old version before installing this one.</p>`
     : `<p class="note">APK dibuat pipeline komunitas AutoBuilds, bukan oleh tim Morphe maupun situs ini. Link diteruskan ke sumber aslinya dan di-refresh beberapa kali sehari. Pasang dengan risiko sendiri.</p>`;
   const body = `
     <nav class="crumbs"><a href="/">Semua Aplikasi</a> / ${esc(app.name)}</nav>

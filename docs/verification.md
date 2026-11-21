@@ -67,6 +67,12 @@
 - Perubahan: `scripts/lib/mirror.mjs` (applyMirrors) kini mengganti `version` dengan versi mirror kalau ada mirror (aslinya disimpan di `morphe_version`), begitu juga ukuran file; tanggal update ikut tanggal file mirror kalau versinya berbeda. `scripts/map-mirrors.mjs` menyimpan `size_mb` + `updated` tiap entri (dari GitHub API: `size` dan `updated_at` aset). `scripts/lib/render.mjs`: catatan halaman detail berubah jadi "versi di halaman ini mengikuti file mirror (vX); morpheapk.com masih menampilkan vY" untuk 16 aplikasi yang versinya berbeda.
 - Verifikasi: 29/29 tes lolos. Build live: Instagram (exact) tetap v447.0.0.55.81 tanggal 4 Nov 2026; Crunchyroll tampil v3.99.3 (mirror, ukuran 95,3 MB, tanggal file 25 Jun 2026) dengan catatan Morphe masih menampilkan v3.75.0; X tampil v12.19.1-release.0 dengan catatan Morphe masih menampilkan v12.39.0-prod.01. Tepat 16/100 halaman menampilkan catatan versi mirror. Halaman utama juga menampilkan versi mirror.
 
+## Hapus atribusi MorpheAPK, catatan download bahasa Inggris (21 Nov 2026, 14.00 WIB)
+
+- Permintaan Zan: hapus tulisan "Sumber: MorpheAPK" (navigasi), "Data dari morpheapk.com" (footer), dan "Tautan asli GitLab morpheapk.com sedang tidak bisa diakses." (catatan download); catatan download diganti bahasa Inggris.
+- Perubahan di `scripts/lib/render.mjs`: tautan navigasi "Sumber: MorpheAPK" dihapus; footer kini hanya "APK dibuat pipeline komunitas AutoBuilds, bukan oleh tim Morphe maupun situs ini. Unduh dan pasang dengan risiko sendiri."; catatan download menjadi "Download from the {sumber} GitHub mirror. The mirror is signed with a different key, so uninstall the old version before installing this one." (nama mirror mengikuti sumber sebenarnya per aplikasi — Purple-Drain, Macka323, dst. — bukan selalu Purple-Drain). Klausul versi tetap ada dalam bahasa Inggris untuk 16 aplikasi yang versinya berbeda: "the version shown follows the mirror file (vX); morpheapk.com still lists vY".
+- Verifikasi: 29/29 tes lolos; build lokal 100 halaman: 0 kemunculan ketiga tulisan yang dihapus di seluruh `public/`.
+
 ## Yang belum terverifikasi
 
 - Run ke-2 tanpa perubahan data (tidak ada commit baru). Dijadwalkan otomatis oleh cron workflow pukul 00.00 WIB (17.00 UTC); Muse tidak bisa memicu dispatch sendiri — verifikasi menyusul dari run cron pertama.
