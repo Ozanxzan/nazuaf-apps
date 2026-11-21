@@ -28,7 +28,7 @@ export function renderIndex(apps, generatedAt) {
     <a class="pop-item" href="/apps/${esc(a.slug)}/"><img src="${esc(a.icon || '')}" alt="" width="64" height="64" loading="lazy"><span>${esc(a.name?.replace(/^Morphe /, ''))}</span></a>`).join('');
   const body = `
     <section class="hero"><h1>Aplikasi Morphe, sudah di-patch.</h1><p>Sekitar ${apps.length} aplikasi Android siap pasang — dari YouTube dan Reddit sampai Instagram dan Duolingo — dengan patch resmi Morphe atau komunitas. Tanpa root.</p>
-    <p class="updated">Terakhir diperbarui: ${esc(formatDateId(generatedAt))} · Sumber data: <a href="https://morpheapk.com/apps/">morpheapk.com</a></p></section>
+    <p class="updated">Terakhir diperbarui: ${esc(formatDateId(generatedAt))}</p></section>
     <section><h2>Popular</h2><div class="popular">${popCards}</div></section>
     <section><h2>Semua Aplikasi <span class="count">${apps.length}</span></h2>
     <input id="q" type="search" placeholder="Cari ${apps.length} aplikasi..." aria-label="Cari aplikasi">
@@ -49,7 +49,7 @@ export function renderIndex(apps, generatedAt) {
         noResult.hidden = shown > 0;
       });
     </script>`;
-  return shell({ title: 'Aplikasi Morphe — morphe.nazuaf.com', desc: `Daftar ${apps.length} aplikasi Android pre-patched Morphe, diperbarui otomatis dari morpheapk.com.`, body });
+  return shell({ title: 'Aplikasi Morphe — morphe.nazuaf.com', desc: `Daftar ${apps.length} aplikasi Android pre-patched Morphe, diperbarui otomatis.`, body });
 }
 
 export function renderDetail(app) {
@@ -80,7 +80,6 @@ export function renderDetail(app) {
     <a class="btn-download" href="${esc(dlUrl)}" target="_blank" rel="noopener nofollow">Download APK${app.size_mb ? ` (${esc(app.size_mb)} MB)` : ''}</a>
     ${mirrorNote}
     <section><h2>Detail aplikasi</h2><ul class="info">${rowsHtml}</ul></section>
-    ${app.description_html ? `<section class="about">${app.description_html}</section>` : ''}
-    <p><a href="${esc(app.source_url)}" target="_blank" rel="noopener">Lihat di Morphe →</a></p>`;
+    ${app.description_html ? `<section class="about">${app.description_html}</section>` : ''}`;
   return shell({ title: `${app.name} v${app.version} — morphe.nazuaf.com`, desc: app.description || `${app.name} APK dengan patch Morphe.`, body });
 }

@@ -73,6 +73,12 @@
 - Perubahan di `scripts/lib/render.mjs`: tautan navigasi "Sumber: MorpheAPK" dihapus; footer kini hanya "APK dibuat pipeline komunitas AutoBuilds, bukan oleh tim Morphe maupun situs ini. Unduh dan pasang dengan risiko sendiri."; catatan download menjadi "Download from the {sumber} GitHub mirror. The mirror is signed with a different key, so uninstall the old version before installing this one." (nama mirror mengikuti sumber sebenarnya per aplikasi — Purple-Drain, Macka323, dst. — bukan selalu Purple-Drain). Klausul versi tetap ada dalam bahasa Inggris untuk 16 aplikasi yang versinya berbeda: "the version shown follows the mirror file (vX); morpheapk.com still lists vY".
 - Verifikasi: 29/29 tes lolos; build lokal 100 halaman: 0 kemunculan ketiga tulisan yang dihapus di seluruh `public/`.
 
+## Hapus sisa atribusi MorpheAPK (21 Nov 2026, 14.05 WIB)
+
+- Permintaan Zan (lanjutan): hapus juga "Sumber data: morpheapk.com" di hero halaman utama dan tautan "Lihat di Morphe" di tiap halaman detail.
+- Perubahan di `scripts/lib/render.mjs`: hero kini hanya "Terakhir diperbarui: ..."; meta description halaman utama menjadi "diperbarui otomatis." (tanpa "dari morpheapk.com"); baris tautan "Lihat di Morphe →" dihapus dari halaman detail.
+- Verifikasi: 29/29 tes lolos. Sisa penyebutan morpheapk.com di `public/` tinggal 16 — semuanya klausul versi di catatan download ("morpheapk.com still lists vY") pada 16 aplikasi yang versinya berbeda dari data Morphe.
+
 ## Yang belum terverifikasi
 
 - Run ke-2 tanpa perubahan data (tidak ada commit baru). Dijadwalkan otomatis oleh cron workflow pukul 00.00 WIB (17.00 UTC); Muse tidak bisa memicu dispatch sendiri — verifikasi menyusul dari run cron pertama.
