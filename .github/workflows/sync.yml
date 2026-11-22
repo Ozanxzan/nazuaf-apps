@@ -23,11 +23,12 @@ jobs:
           node-version: '20'
       - run: npm test
       - run: node scripts/scrape.mjs
+      - run: node scripts/map-mirrors.mjs || true
       - run: node scripts/build.mjs
       - name: Commit kalau ada perubahan data
         run: |
           git config user.name "muse-sync"
           git config user.email "muse-sync@nazuaf.com"
-          git add data/apps.json
+          git add data/apps.json data/mirror-urls.json
           git diff --cached --quiet || git commit -m "sync: update aplikasi Morphe $(date -u +%Y-%m-%dT%H:%M:%SZ)"
           git push
