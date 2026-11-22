@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-21T06:37:11.303Z",
+  "generated_at": "2026-11-22T07:40:22.403Z",
   "note": "Pemetaan mirror unduhan (GitLab sumber mati Nov 2026). Digabung saat build; jangan edit manual, jalankan ulang script ini.",
   "mirrors": {
     "morphe-aiocal": {
@@ -18,7 +18,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 64.75,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-avocards": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/avocards-universal-morphe-patches-v3.0.18.apk",
@@ -72,7 +72,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 51.84,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-crex": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/crex-universal-paresh-v26.04.05.apk",
@@ -81,7 +81,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 90.74,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-crunchyroll": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/crunchyroll-universal-morphe-patches-v3.99.3.apk",
@@ -108,7 +108,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 73.71,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-documentscanner": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/documentscanner-universal-paresh-v6.8.18.apk",
@@ -116,8 +116,8 @@
       "version": "6.8.18",
       "arch": "universal",
       "exact": true,
-      "size_mb": 72.19,
-      "updated": "2026-11-16"
+      "size_mb": 123.43,
+      "updated": "2026-11-22"
     },
     "morphe-duolingo": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/duolingo-universal-morphe-patches-v6.98.4.apk",
@@ -153,7 +153,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 59.1,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-fing": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/fing-universal-paresh-v12.12.0.apk",
@@ -161,8 +161,8 @@
       "version": "12.12.0",
       "arch": "universal",
       "exact": true,
-      "size_mb": 21.02,
-      "updated": "2026-11-16"
+      "size_mb": 38.55,
+      "updated": "2026-11-22"
     },
     "morphe-flatastic": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/flatastic-universal-revanced-patches-v3.16.1.apk",
@@ -233,8 +233,8 @@
       "version": "7.99.0.1007655401",
       "arch": "universal",
       "exact": true,
-      "size_mb": 122.74,
-      "updated": "2026-11-16"
+      "size_mb": 92.13,
+      "updated": "2026-11-22"
     },
     "morphe-hellochinese": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/hellochinese-universal-morphe-patches-v7.11.0.apk",
@@ -270,7 +270,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 53.76,
-      "updated": "2026-11-21"
+      "updated": "2026-11-22"
     },
     "morphe-icon-packer": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/icon-packer-universal-morphe-patches-v1.21.0-release.apk",
@@ -296,8 +296,8 @@
       "version": "26.10.1",
       "arch": "universal",
       "exact": false,
-      "size_mb": 185.51,
-      "updated": "2026-11-21"
+      "size_mb": 185.48,
+      "updated": "2026-11-22"
     },
     "morphe-kicker": {
       "url": "https://github.com/rpeters1430/Morphe-AutoBuilds/releases/download/latest/kicker-universal-revanced-patches-v6.7.2.apk",
@@ -315,7 +315,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 118.05,
-      "updated": "2026-11-17"
+      "updated": "2026-11-22"
     },
     "morphe-letterboxd": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/letterboxd-universal-morphe-patches-v3.2.10.apk",
@@ -324,7 +324,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 130.06,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-lightroom": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/lightroom-universal-morphe-patches-v11.5.31.apk",
@@ -351,7 +351,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 10.75,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-lyfta": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/lyfta-universal-morphe-patches-v1.599.apk",
@@ -369,7 +369,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 69.17,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-macrofactor": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/macrofactor-universal-morphe-patches-v5.7.9.apk",
@@ -395,8 +395,8 @@
       "version": "26.5.0",
       "arch": "universal",
       "exact": true,
-      "size_mb": 114.18,
-      "updated": "2026-11-16"
+      "size_mb": 94.46,
+      "updated": "2026-11-22"
     },
     "morphe-mark": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/mark-universal-paresh-v6.6.apk",
@@ -405,7 +405,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 7.68,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-meme": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/meme-universal-morphe-patches-v4.6826.apk",
@@ -471,13 +471,13 @@
       "updated": "2026-11-16"
     },
     "morphe-niagara": {
-      "url": "https://github.com/rpeters1430/Morphe-AutoBuilds/releases/download/latest/niagara-universal-d0nj-rcd179d6e2a81da17-v1.16.37.apk",
-      "source": "rpeters1430",
+      "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/niagara-universal-morphe-patches-v1.16.37.apk",
+      "source": "Purple-Drain",
       "version": "1.16.37",
       "arch": "universal",
       "exact": false,
       "size_mb": 15.78,
-      "updated": "2026-11-17"
+      "updated": "2026-11-22"
     },
     "morphe-nomone": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/nomone-universal-morphe-patches-v1.9.3-GooglePlay.apk",
@@ -522,7 +522,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 26.85,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-photomath": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/photomath-universal-devanced-v8.48.0.apk",
@@ -530,8 +530,8 @@
       "version": "8.48.0",
       "arch": "universal",
       "exact": true,
-      "size_mb": 11.45,
-      "updated": "2026-11-16"
+      "size_mb": 16.25,
+      "updated": "2026-11-22"
     },
     "morphe-pinterest": {
       "url": "https://github.com/toidicakhia/Morphe-AutoBuilds/releases/download/latest/pinterest-universal-morphe-patches-v14.44.0.apk",
@@ -549,7 +549,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 36.76,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-podcast": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/podcast-universal-morphe-patches-v2026.10.1.apk",
@@ -567,7 +567,7 @@
       "arch": "arm64-v8a",
       "exact": true,
       "size_mb": 71.65,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-prime-video": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/prime-video-universal-morphe-patches-v3.0.470.1047.apk",
@@ -585,16 +585,16 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 43.21,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-proton-mail": {
-      "url": "https://github.com/rpeters1430/Morphe-AutoBuilds/releases/download/latest/proton-mail-universal-hxreborn-r149f67cd42ff6c85-v7.12.1.apk",
+      "url": "https://github.com/rpeters1430/Morphe-AutoBuilds/releases/download/latest/proton-mail-universal-hxreborn-r685fe29cce73f31c-v7.12.1.apk",
       "source": "rpeters1430",
       "version": "7.12.1",
       "arch": "universal",
       "exact": false,
       "size_mb": 103.42,
-      "updated": "2026-11-21"
+      "updated": "2026-11-22"
     },
     "morphe-proton-vpn": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/proton-vpn-universal-morphe-patches-v5.20.57.0.apk",
@@ -629,8 +629,8 @@
       "version": "2026.40.0",
       "arch": "universal",
       "exact": true,
-      "size_mb": 94.5,
-      "updated": "2026-11-21"
+      "size_mb": 94.45,
+      "updated": "2026-11-22"
     },
     "morphe-smart-launcher": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/smart_launcher-universal-morphe-patches-v6.6.build.020.apk",
@@ -693,7 +693,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 108.27,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-strava": {
       "url": "https://github.com/rpeters1430/Morphe-AutoBuilds/releases/download/latest/strava-universal-rushiranpise-dev-r0e12b380725ff3a3-v480.15.apk",
@@ -738,7 +738,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 132.49,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-ticktick": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/ticktick-universal-paresh-v8.2.4.0.apk",
@@ -747,7 +747,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 56.02,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-tiktok": {
       "url": "https://github.com/Macka323/Morphe-AutoBuilds/releases/download/latest/tiktok-universal-morphe-patches-v46.2.3.apk",
@@ -759,13 +759,13 @@
       "updated": "2026-08-26"
     },
     "morphe-trakt": {
-      "url": "https://github.com/rpeters1430/Morphe-AutoBuilds/releases/download/latest/trakt-universal-pixelpusher-r94659a7534bc34c2-v3.29.0.apk",
-      "source": "rpeters1430",
-      "version": "3.29.0",
+      "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/trakt-universal-morphe-patches-v3.30.0.apk",
+      "source": "Purple-Drain",
+      "version": "3.30.0",
       "arch": "universal",
       "exact": false,
-      "size_mb": 43.7,
-      "updated": "2026-11-18"
+      "size_mb": 32.62,
+      "updated": "2026-11-22"
     },
     "morphe-truecaller": {
       "url": "https://github.com/toidicakhia/Morphe-AutoBuilds/releases/download/latest/truecaller-universal-paresh-v26.10.6.apk",
@@ -792,7 +792,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 46.32,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-ventusky": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/ventusky-universal-morphe-patches-v53.1.apk",
@@ -810,7 +810,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 306.58,
-      "updated": "2026-11-16"
+      "updated": "2026-11-22"
     },
     "morphe-wallcraft": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/wallcraft-universal-morphe-patches-v3.61.01.apk",
@@ -837,7 +837,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 57.94,
-      "updated": "2026-11-17"
+      "updated": "2026-11-22"
     },
     "morphe-windy": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/windy-universal-morphe-patches-v51.0.1.apk",
@@ -863,8 +863,8 @@
       "version": "12.19.1-release.0",
       "arch": "universal",
       "exact": false,
-      "size_mb": 157.38,
-      "updated": "2026-11-16"
+      "size_mb": 273.44,
+      "updated": "2026-11-22"
     },
     "morphe-xodo": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/xodo-universal-morphe-patches-v11.2.0.apk",
@@ -890,8 +890,8 @@
       "version": "21.30.216",
       "arch": "universal",
       "exact": true,
-      "size_mb": 142.97,
-      "updated": "2026-11-21"
+      "size_mb": 142.78,
+      "updated": "2026-11-22"
     },
     "morphe-youtube-music": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/youtube-music-arm64-v8a-morphe-v9.30.53.apk",
@@ -899,8 +899,8 @@
       "version": "9.30.53",
       "arch": "arm64-v8a",
       "exact": true,
-      "size_mb": 78.08,
-      "updated": "2026-11-21"
+      "size_mb": 78.03,
+      "updated": "2026-11-22"
     }
   }
 }
