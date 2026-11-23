@@ -76,7 +76,7 @@ test('renderDetail memakai URL mirror + catatan uninstall, versi mirror ditampil
   const html = renderDetail(app);
   assert.ok(html.includes('github.com/Macka323/Morphe-AutoBuilds/releases/download/latest/instagram-arm64-v8a-piko-patches-v447.0.0.55.81.apk'));
   assert.ok(!html.includes('gitlab.com/api/v4/projects/87288318'));
-  assert.ok(html.includes('uninstall the old version'));
+  assert.ok(html.includes('uninstall the original version from PlayStore'));
   assert.ok(html.includes('Macka323'));
   // Versi sama persis → tidak ada keterangan versi mirror tambahan.
   assert.ok(!html.includes('follows the mirror file'));
@@ -84,7 +84,7 @@ test('renderDetail memakai URL mirror + catatan uninstall, versi mirror ditampil
   const newer = { ...app, version: '452.1.0.53.64', mirror_version: '452.1.0.53.64', mirror_exact: false };
   const html2 = renderDetail(newer);
   assert.ok(html2.includes('follows the mirror file (v452.1.0.53.64)'));
-  assert.ok(html2.includes('morpheapk.com still lists v447.0.0.55.81'));
+  assert.ok(!html2.includes('morpheapk.com still lists'));
 });
 
 test('renderDetail tanpa mirror tetap pakai download_url GitLab', () => {
@@ -98,7 +98,7 @@ test('renderDetail tanpa mirror tetap pakai download_url GitLab', () => {
   };
   const html = renderDetail(app);
   assert.ok(html.includes('gitlab.com/api/v4/projects/87288318'));
-  assert.ok(!html.includes('uninstall the old version'));
+  assert.ok(!html.includes('uninstall the original version from PlayStore'));
 });
 
 test('buildSite menggabung mirror-urls.json di samping apps.json', async () => {
@@ -116,7 +116,7 @@ test('buildSite menggabung mirror-urls.json di samping apps.json', async () => {
   assert.equal(r.count, 1);
   const detail = readFileSync(join(outDir, 'apps', 'morphe-youtube', 'index.html'), 'utf8');
   assert.ok(detail.includes('github.com/Purple-Drain/x/y.apk'));
-  assert.ok(detail.includes('uninstall the old version'));
+  assert.ok(detail.includes('uninstall the original version from PlayStore'));
 });
 
 test('loadMirrors/applyMirrors tahan kalau file tidak ada', () => {

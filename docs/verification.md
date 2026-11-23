@@ -101,6 +101,12 @@
 - Laporan Zan: semua aplikasi menampilkan "Diperbarui 4 Nov 2026". Penyebab: 66/100 aplikasi memang bertanggal 2026-11-04 di data Morphe, dan `applyMirrors` hanya mengganti tanggal dengan tanggal file mirror kalau versinya berbeda — jadi aplikasi yang versinya sama persis (84/100) tetap memakai tanggal Morphe.
 - Perbaikan: `scripts/lib/mirror.mjs` kini selalu mengganti `updated` dengan tanggal file mirror (`updated_at` dari API GitHub) kalau ada; kalau tidak ada, tanggal Morphe dipertahankan. Verifikasi: TikTok kini 26 Agu 2026 (file Macka323), YouTube 21 Nov 2026, Instagram 21 Okt 2026, Crunchyroll 25 Jun 2026; 0 aplikasi masih menampilkan 4 Nov 2026.
 
+## Catatan download: hapus "morpheapk.com still lists", ganti "old version" (23 Nov 2026, 21.05 WIB)
+
+- Permintaan Zan (dari tangkapan layar halaman KakaoTalk): hapus tulisan "; morpheapk.com still lists v26.9.1." dari catatan download; ganti "so uninstall the old version before installing this one." menjadi "so uninstall the original version from PlayStore before installing this one."
+- Perubahan di `scripts/lib/render.mjs`: klausul "; morpheapk.com still lists vY" dihapus dari catatan download (keterangan "the version shown follows the mirror file (vX)" tetap ada kalau versi mirror berbeda); kalimat uninstall diganti seperti diminta. Tes di `test/mirror.test.mjs` diperbarui mengikuti teks baru.
+- Verifikasi: 31/31 tes lolos; build lokal: 0 kemunculan "morpheapk.com still lists" di seluruh `public/`.
+
 ## Yang belum terverifikasi
 
 - Run ke-2 tanpa perubahan data (tidak ada commit baru). Dijadwalkan otomatis oleh cron workflow pukul 00.00 WIB (17.00 UTC); Muse tidak bisa memicu dispatch sendiri — verifikasi menyusul dari run cron pertama.
