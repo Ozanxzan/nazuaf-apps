@@ -115,8 +115,12 @@ function writeData(apps) {
   } catch { /* belum ada file */ }
   const newHash = hashContent(apps);
   if (oldHash === newHash) {
-    console.log('tidak ada perubahan konten — data/apps.json tidak ditulis ulang');
-    return;
+    // Isi aplikasi sama, tapi generated_at tetap diperbarui: tanggal
+    // "Terakhir diperbarui" di situs harus mencerminkan sinkronisasi
+    // terakhir yang berhasil, bukan perubahan konten terakhir.
+    // (Sebelumnya: file tidak ditulis ulang di sini, jadi tanggal mentok
+    // di 21 Nov 2026 walau sync jalan 3x sehari.)
+    console.log('tidak ada perubahan konten — hanya perbarui generated_at');
   }
   mkdirSync(join(ROOT, 'data'), { recursive: true });
   writeFileSync(DATA_PATH, writeAppsJson(apps, new Date().toISOString()));
