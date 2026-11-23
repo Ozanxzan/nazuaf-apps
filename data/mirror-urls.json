@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-22T22:17:32.741Z",
+  "generated_at": "2026-11-23T08:27:59.438Z",
   "note": "Pemetaan mirror unduhan (GitLab sumber mati Nov 2026). Digabung saat build; jangan edit manual, jalankan ulang script ini.",
   "mirrors": {
     "morphe-aiocal": {
@@ -621,7 +621,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 4.3,
-      "updated": "2026-11-18"
+      "updated": "2026-11-23"
     },
     "morphe-reddit": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/reddit-universal-morphe-v2026.40.0.apk",
@@ -630,7 +630,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 94.45,
-      "updated": "2026-11-22"
+      "updated": "2026-11-23"
     },
     "morphe-smart-launcher": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/smart_launcher-universal-morphe-patches-v6.6.build.020.apk",
@@ -891,7 +891,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 142.78,
-      "updated": "2026-11-22"
+      "updated": "2026-11-23"
     },
     "morphe-youtube-music": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/youtube-music-arm64-v8a-morphe-v9.30.53.apk",
@@ -900,7 +900,7 @@
       "arch": "arm64-v8a",
       "exact": true,
       "size_mb": 78.03,
-      "updated": "2026-11-22"
+      "updated": "2026-11-23"
     }
   }
 }
