@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-23T20:45:01.059Z",
+  "generated_at": "2026-11-24T10:36:34.973Z",
   "note": "Pemetaan mirror unduhan (GitLab sumber mati Nov 2026). Digabung saat build; jangan edit manual, jalankan ulang script ini.",
   "mirrors": {
     "morphe-aiocal": {
@@ -588,13 +588,13 @@
       "updated": "2026-11-22"
     },
     "morphe-proton-mail": {
-      "url": "https://github.com/rpeters1430/Morphe-AutoBuilds/releases/download/latest/proton-mail-universal-hxreborn-r685fe29cce73f31c-v7.12.1.apk",
+      "url": "https://github.com/rpeters1430/Morphe-AutoBuilds/releases/download/latest/proton-mail-universal-hxreborn-r36521464027aeb88-v7.12.1.apk",
       "source": "rpeters1430",
       "version": "7.12.1",
       "arch": "universal",
       "exact": false,
-      "size_mb": 103.42,
-      "updated": "2026-11-22"
+      "size_mb": 103.44,
+      "updated": "2026-11-24"
     },
     "morphe-proton-vpn": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/proton-vpn-universal-morphe-patches-v5.20.57.0.apk",
@@ -630,7 +630,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 94.45,
-      "updated": "2026-11-23"
+      "updated": "2026-11-24"
     },
     "morphe-smart-launcher": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/smart_launcher-universal-morphe-patches-v6.6.build.020.apk",
@@ -891,7 +891,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 142.78,
-      "updated": "2026-11-23"
+      "updated": "2026-11-24"
     },
     "morphe-youtube-music": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/youtube-music-arm64-v8a-morphe-v9.30.53.apk",
@@ -900,7 +900,7 @@
       "arch": "arm64-v8a",
       "exact": true,
       "size_mb": 78.03,
-      "updated": "2026-11-23"
+      "updated": "2026-11-24"
     }
   }
 }
