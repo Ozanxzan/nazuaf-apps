@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T18:56:45.468Z",
+  "generated_at": "2026-11-26T09:03:06.727Z",
   "note": "Pemetaan mirror unduhan (GitLab sumber mati Nov 2026). Digabung saat build; jangan edit manual, jalankan ulang script ini.",
   "mirrors": {
     "morphe-aiocal": {
@@ -588,13 +588,13 @@
       "updated": "2026-11-22"
     },
     "morphe-proton-mail": {
-      "url": "https://github.com/rpeters1430/Morphe-AutoBuilds/releases/download/latest/proton-mail-universal-hxreborn-rfbf7d1a909100760-v7.12.1.apk",
+      "url": "https://github.com/rpeters1430/Morphe-AutoBuilds/releases/download/latest/proton-mail-universal-hxreborn-r0f554db973c2d323-v7.12.1.apk",
       "source": "rpeters1430",
       "version": "7.12.1",
       "arch": "universal",
       "exact": false,
       "size_mb": 103.44,
-      "updated": "2026-11-25"
+      "updated": "2026-11-26"
     },
     "morphe-proton-vpn": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/proton-vpn-universal-morphe-patches-v5.20.57.0.apk",
@@ -791,8 +791,8 @@
       "version": "45.8.0.110",
       "arch": "universal",
       "exact": true,
-      "size_mb": 46.32,
-      "updated": "2026-11-22"
+      "size_mb": 40.23,
+      "updated": "2026-11-26"
     },
     "morphe-ventusky": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/ventusky-universal-morphe-patches-v53.1.apk",
