@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-28T00:21:34.068Z",
+  "generated_at": "2026-11-28T08:36:42.747Z",
   "note": "Pemetaan mirror unduhan (GitLab sumber mati Nov 2026). Digabung saat build; jangan edit manual, jalankan ulang script ini.",
   "mirrors": {
     "morphe-aiocal": {
@@ -207,7 +207,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 91.13,
-      "updated": "2026-11-27"
+      "updated": "2026-11-28"
     },
     "morphe-geocaching": {
       "url": "https://github.com/rpeters1430/Morphe-AutoBuilds/releases/download/latest/geocaching-universal-morphe-patches-v10.20.0.apk",
@@ -297,7 +297,7 @@
       "arch": "universal",
       "exact": true,
       "size_mb": 185.55,
-      "updated": "2026-11-27"
+      "updated": "2026-11-28"
     },
     "morphe-kicker": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/kicker-universal-revanced-patches-v7.9.9.apk",
@@ -624,13 +624,13 @@
       "updated": "2026-11-27"
     },
     "morphe-reddit": {
-      "url": "https://github.com/rpeters1430/Morphe-AutoBuilds/releases/download/latest/reddit-universal-morphe-r93e4529ff8576f46-v2026.48.0.apk",
+      "url": "https://github.com/rpeters1430/Morphe-AutoBuilds/releases/download/latest/reddit-universal-morphe-r060b48c7dc804a47-v2026.48.0.apk",
       "source": "rpeters1430",
       "version": "2026.48.0",
       "arch": "universal",
       "exact": false,
-      "size_mb": 96.38,
-      "updated": "2026-11-27"
+      "size_mb": 96.51,
+      "updated": "2026-11-28"
     },
     "morphe-smart-launcher": {
       "url": "https://github.com/Purple-Drain/Morphe-AutoBuilds/releases/download/latest/smart_launcher-universal-morphe-patches-v6.6.build.020.apk",
